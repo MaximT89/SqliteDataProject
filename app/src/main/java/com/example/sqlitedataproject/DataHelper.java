@@ -11,10 +11,12 @@ public class DataHelper extends SQLiteOpenHelper {
     private final static String TABLE_NAME_USER = "user_data";
     private Context context;
 
+    private String s = "shdfja";
 
     public DataHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         context = this.context;
+
     }
 
     @Override
