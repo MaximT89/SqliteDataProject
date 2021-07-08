@@ -9,6 +9,8 @@ import androidx.annotation.Nullable;
 
 public class DataHelper extends SQLiteOpenHelper {
 
+    private static DataHelper instance;
+
     private final static int DATABASE_VERSION = 1;
     private final static String DATABASE_NAME = "my_project.db";
     private final static String TABLE_NAME_USER = "user_data";
@@ -29,6 +31,14 @@ public class DataHelper extends SQLiteOpenHelper {
 
     public DataHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+
+    public static DataHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new DataHelper(context);
+        }
+        return instance;
     }
 
     @Override
