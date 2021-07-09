@@ -20,19 +20,9 @@ public class DataHelper extends SQLiteOpenHelper {
     private static final String COL3 = "age";
     private static final String COL4 = "city";
 
-    private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS "
-            + TABLE_NAME_USER + "("
-            + COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + COL2 + " TEXT NOT NULL, "
-            + COL3 + " INTEGER, "
-            + COL4 + " TEXT" + ");";
-
-    private static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME_USER;
-
     public DataHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
 
     public static DataHelper getInstance(Context context) {
         if (instance == null) {
@@ -43,11 +33,7 @@ public class DataHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        try {
-            db.execSQL(CREATE_TABLE);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Override
@@ -58,18 +44,6 @@ public class DataHelper extends SQLiteOpenHelper {
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         super.onDowngrade(db, oldVersion, newVersion);
-    }
-
-    public boolean insertUser(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(COL2, user.getName());
-        cv.put(COL3, user.getAge());
-        cv.put(COL4, user.getCity());
-
-        long result = db.insert(TABLE_NAME_USER, null, cv);
-
-        return result != -1;
     }
 
 }
