@@ -25,9 +25,6 @@ public class MainActivity extends AppCompatActivity {
             db.insertUser(new User("Tom", 25, "Tokio"));
         });
 
-        mBtnGoSecond.setOnClickListener(v ->
-                startActivity(new Intent(this, SecondActivity.class))
-        );
     }
 
     private void initView() {
