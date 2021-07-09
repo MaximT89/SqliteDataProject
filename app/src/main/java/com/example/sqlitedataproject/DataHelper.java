@@ -5,13 +5,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
-
 public class DataHelper extends SQLiteOpenHelper {
 
     private static DataHelper instance;
 
-    private final static int DATABASE_VERSION = 1;
+    private final static int DATABASE_VERSION = 3;
     private final static String DATABASE_NAME = "my_project.db";
     private final static String TABLE_NAME_USER = "user_data";
 
@@ -32,7 +30,6 @@ public class DataHelper extends SQLiteOpenHelper {
     public DataHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
 
     public static DataHelper getInstance(Context context) {
         if (instance == null) {
@@ -58,6 +55,7 @@ public class DataHelper extends SQLiteOpenHelper {
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         super.onDowngrade(db, oldVersion, newVersion);
+
     }
 
     public boolean insertUser(User user) {
@@ -71,5 +69,11 @@ public class DataHelper extends SQLiteOpenHelper {
 
         return result != -1;
     }
+
+    public void dropTable() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(DROP_TABLE);
+    }
+
 
 }
