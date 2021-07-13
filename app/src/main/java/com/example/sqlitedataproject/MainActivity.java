@@ -3,12 +3,15 @@ package com.example.sqlitedataproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import static android.widget.Toast.makeText;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,13 +38,13 @@ public class MainActivity extends AppCompatActivity {
                 User user = new User(name, age, city);
 
                 if (db.insertUser(user)) {
-                    Toast.makeText(this, "Пользователь успешно добавлен в базу данных", Toast.LENGTH_LONG).show();
+                    Log.d("TAG", "Пользователь успешно добавлен в базу данных");
                 } else {
-                    Toast.makeText(this, "Ошибка добавления пользователя", Toast.LENGTH_LONG).show();
+                    Log.d("TAG", "Произошла ошибка при добавлении пользователя в базу данных");
                 }
 
             } else {
-                Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show();
+                makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show();
             }
 
         });
