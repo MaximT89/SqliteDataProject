@@ -151,6 +151,17 @@ public class DataHelper extends SQLiteOpenHelper {
         return users;
     }
 
+    public void deleteUser(String name){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + TABLE_NAME_USER + " WHERE name = '" + name + "';";
+        db.execSQL(query);
+    }
+
+    public void deleteUserSecond(String name){
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_NAME_USER, "name = ?", new String[]{name});
+    }
+
     public void dropTable() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(DROP_TABLE);

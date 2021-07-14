@@ -18,8 +18,9 @@ import static android.widget.Toast.makeText;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText mEditName, mEditAge, mEditCity, mEditSearch, mEditUpdateCity, mEditUpdateUser;
-    private Button mBtnSaveUser, mBtnSearch, mBtnUpdate;
+    private EditText mEditName, mEditAge, mEditCity, mEditSearch, mEditUpdateCity, mEditUpdateUser,
+            mEditUserDelete;
+    private Button mBtnSaveUser, mBtnSearch, mBtnUpdate, mBtnDelete;
     private DataHelper db;
     private TextView mTextSearchResult;
 
@@ -31,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
         initView();
 
         mBtnSaveUser.setOnClickListener(v -> {
-
-//            DataHelper.getInstance(this).dropTable();
 
             if (!TextUtils.isEmpty(mEditName.getText()) && !TextUtils.isEmpty(mEditAge.getText()) && !TextUtils.isEmpty(mEditCity.getText())) {
 
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         mBtnSearch.setOnClickListener(v -> {
 
-            if(!TextUtils.isEmpty(mEditSearch.getText().toString())){
+            if (!TextUtils.isEmpty(mEditSearch.getText().toString())) {
 
 //                List<User> users = db.getUsers(mEditSearch.getText().toString());
                 List<User> users = db.getUsersSecond(mEditSearch.getText().toString());
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     result.append(user.toString()).append("\n");
                 }
 
-                if(users.size() == 0){
+                if (users.size() == 0) {
                     mTextSearchResult.setText("Пользователи с таким именем не найдены");
                 }
 
@@ -81,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mBtnUpdate.setOnClickListener(v -> {
-            if(!TextUtils.isEmpty(mEditUpdateCity.getText().toString())
-                    && !TextUtils.isEmpty(mEditUpdateUser.getText().toString())){
+            if (!TextUtils.isEmpty(mEditUpdateCity.getText().toString())
+                    && !TextUtils.isEmpty(mEditUpdateUser.getText().toString())) {
 
 //                db.updateUser(mEditUpdateUser.getText().toString(),
 //                        mEditUpdateCity.getText().toString());
@@ -98,6 +97,19 @@ public class MainActivity extends AppCompatActivity {
                 mEditUpdateCity.setHintTextColor(Color.RED);
             }
         });
+
+        mBtnDelete.setOnClickListener(v -> {
+
+            if(!TextUtils.isEmpty(mEditUserDelete.getText().toString())){
+
+                db.deleteUser(mEditUserDelete.getText().toString());
+
+            }else {
+                mEditUserDelete.setHint("Введите имя пользователя");
+                mEditUserDelete.setHintTextColor(Color.RED);
+            }
+
+        });
     }
 
     private void initView() {
@@ -107,10 +119,12 @@ public class MainActivity extends AppCompatActivity {
         mEditSearch = findViewById(R.id.edit_search);
         mEditUpdateCity = findViewById(R.id.edit_new_city);
         mEditUpdateUser = findViewById(R.id.edit_name_user_update);
+        mEditUserDelete = findViewById(R.id.edit_name_delete);
 
         mBtnSaveUser = findViewById(R.id.btn_save_user);
         mBtnSearch = findViewById(R.id.btn_search);
         mBtnUpdate = findViewById(R.id.btn_update_user);
+        mBtnDelete = findViewById(R.id.btn_delete_user);
 
         mTextSearchResult = findViewById(R.id.txt_users);
 
