@@ -2,23 +2,27 @@ package com.example.sqlitedataproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.Build;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.List;
 
 import static android.widget.Toast.makeText;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText mEditName, mEditAge, mEditCity;
-    private Button mBtnSaveUser;
+    private EditText mEditName, mEditAge, mEditCity, mEditSearch;
+    private Button mBtnSaveUser, mBtnSearch;
     private DataHelper db;
+    private TextView mTextSearchResult;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,14 +52,44 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+        mBtnSearch.setOnClickListener(v -> {
+
+            if(!TextUtils.isEmpty(mEditSearch.getText().toString())){
+
+//                List<User> users = db.getUsers(mEditSearch.getText().toString());
+                List<User> users = db.getUsersSecond(mEditSearch.getText().toString());
+
+
+                StringBuilder result = new StringBuilder();
+
+                for (User user : users) {
+                    result.append(user.toString()).append("\n");
+                }
+
+                if(users.size() == 0){
+                    mTextSearchResult.setText("Пользователи с таким именем не найдены");
+                }
+
+                mTextSearchResult.setText(result);
+
+            } else {
+                mTextSearchResult.setText("Введите имя пользователя для поиска");
+            }
+
+        });
     }
 
     private void initView() {
         mEditName = findViewById(R.id.edit_name);
         mEditAge = findViewById(R.id.edit_age);
         mEditCity = findViewById(R.id.edit_city);
+        mEditSearch = findViewById(R.id.edit_search);
 
         mBtnSaveUser = findViewById(R.id.btn_save_user);
+        mBtnSearch = findViewById(R.id.btn_search);
+
+        mTextSearchResult = findViewById(R.id.txt_users);
 
         db = DataHelper.getInstance(this);
     }

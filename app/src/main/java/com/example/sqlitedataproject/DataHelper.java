@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DataHelper extends SQLiteOpenHelper {
 
@@ -75,36 +76,65 @@ public class DataHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    public List<User> getUsers(String name) {
+    public List<User> getUsers(String userName) {
 
         List<User> users = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME_USER + " WHERE name = " + name + " ;";
+        String query = "SELECT * FROM "
+                + TABLE_NAME_USER
+                + " WHERE name = '"
+                + userName
+                + "';";
 
-        try{
-            @SuppressLint("Recycle") Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, null);
 
-            while (cursor.moveToNext()) {
-                users.add(
-                        new User(
-                                cursor.getString(cursor.getColumnIndex("name")),
-                                cursor.getInt(cursor.getColumnIndex("age")),
-                                cursor.getString(cursor.getColumnIndex("city"))
-                        )
-                );
-            }
-        }catch (Exception e){
-            e.printStackTrace();
+        while (cursor.moveToNext()) {
+            users.add(
+                    new User(
+                            cursor.getString(cursor.getColumnIndex("name")),
+                            cursor.getInt(cursor.getColumnIndex("age")),
+                            cursor.getString(cursor.getColumnIndex("city"))
+                    )
+            );
         }
+
+        cursor.close();
 
         return users;
     }
+
+    public List<User> getUsersSecond(String userName){
+
+        List<User> users = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        @SuppressLint("Recycle") Cursor cursor = db.query(TABLE_NAME_USER,
+                new String[]{"name", "age", "city"},
+                "name = ?",
+                new String[]{userName},
+                null,
+                null,
+                null);
+
+        while (cursor.moveToNext()) {
+            users.add(
+                    new User(
+                            cursor.getString(cursor.getColumnIndex("name")),
+                            cursor.getInt(cursor.getColumnIndex("age")),
+                            cursor.getString(cursor.getColumnIndex("city"))
+                    )
+            );
+        }
+
+        cursor.close();
+
+        return users;
+    }
+
 
     public void dropTable() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(DROP_TABLE);
     }
-
-
 }
