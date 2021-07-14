@@ -61,7 +61,6 @@ public class DataHelper extends SQLiteOpenHelper {
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         super.onDowngrade(db, oldVersion, newVersion);
-
     }
 
     public boolean insertUser(User user) {
@@ -74,6 +73,26 @@ public class DataHelper extends SQLiteOpenHelper {
         long result = db.insert(TABLE_NAME_USER, null, cv);
 
         return result != -1;
+    }
+
+    public void updateUser(String name, String city){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + TABLE_NAME_USER + " SET city = '" + city + "' WHERE name = '" + name + "';";
+        db.execSQL(query);
+
+    }
+
+    public void updateUserSecond(String name, String city){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COL4, city);
+
+        String where = "name = '" + name + "';";
+
+//        db.update(TABLE_NAME_USER, cv, where, null);
+        db.update(TABLE_NAME_USER, cv, "name = ?", new String[]{name});
     }
 
     public List<User> getUsers(String userName) {
@@ -131,7 +150,6 @@ public class DataHelper extends SQLiteOpenHelper {
 
         return users;
     }
-
 
     public void dropTable() {
         SQLiteDatabase db = this.getWritableDatabase();

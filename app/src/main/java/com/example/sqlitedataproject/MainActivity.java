@@ -3,6 +3,7 @@ package com.example.sqlitedataproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,8 +18,8 @@ import static android.widget.Toast.makeText;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText mEditName, mEditAge, mEditCity, mEditSearch;
-    private Button mBtnSaveUser, mBtnSearch;
+    private EditText mEditName, mEditAge, mEditCity, mEditSearch, mEditUpdateCity, mEditUpdateUser;
+    private Button mBtnSaveUser, mBtnSearch, mBtnUpdate;
     private DataHelper db;
     private TextView mTextSearchResult;
 
@@ -78,6 +79,25 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+        mBtnUpdate.setOnClickListener(v -> {
+            if(!TextUtils.isEmpty(mEditUpdateCity.getText().toString())
+                    && !TextUtils.isEmpty(mEditUpdateUser.getText().toString())){
+
+//                db.updateUser(mEditUpdateUser.getText().toString(),
+//                        mEditUpdateCity.getText().toString());
+
+                db.updateUserSecond(mEditUpdateUser.getText().toString(),
+                        mEditUpdateCity.getText().toString());
+
+            } else {
+                mEditUpdateUser.setHint("Введите имя пользователя");
+                mEditUpdateUser.setHintTextColor(Color.RED);
+
+                mEditUpdateCity.setHint("Введите новый город пользователя");
+                mEditUpdateCity.setHintTextColor(Color.RED);
+            }
+        });
     }
 
     private void initView() {
@@ -85,9 +105,12 @@ public class MainActivity extends AppCompatActivity {
         mEditAge = findViewById(R.id.edit_age);
         mEditCity = findViewById(R.id.edit_city);
         mEditSearch = findViewById(R.id.edit_search);
+        mEditUpdateCity = findViewById(R.id.edit_new_city);
+        mEditUpdateUser = findViewById(R.id.edit_name_user_update);
 
         mBtnSaveUser = findViewById(R.id.btn_save_user);
         mBtnSearch = findViewById(R.id.btn_search);
+        mBtnUpdate = findViewById(R.id.btn_update_user);
 
         mTextSearchResult = findViewById(R.id.txt_users);
 
