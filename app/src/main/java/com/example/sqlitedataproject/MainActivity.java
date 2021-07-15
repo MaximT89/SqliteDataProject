@@ -102,7 +102,8 @@ public class MainActivity extends AppCompatActivity {
 
             if(!TextUtils.isEmpty(mEditUserDelete.getText().toString())){
 
-                db.deleteUser(mEditUserDelete.getText().toString());
+//                db.deleteUser(mEditUserDelete.getText().toString());
+                db.deleteUserSecond(mEditUserDelete.getText().toString());
 
             }else {
                 mEditUserDelete.setHint("Введите имя пользователя");

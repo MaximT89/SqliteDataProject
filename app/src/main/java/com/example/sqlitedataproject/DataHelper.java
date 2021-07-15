@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class DataHelper extends SQLiteOpenHelper {
 
     private static DataHelper instance;
 
-    private final static int DATABASE_VERSION = 3;
+    private final static int DATABASE_VERSION = 5;
     private final static String DATABASE_NAME = "my_project.db";
     private final static String TABLE_NAME_USER = "user_data";
 
@@ -55,12 +56,9 @@ public class DataHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-    }
-
-    @Override
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        super.onDowngrade(db, oldVersion, newVersion);
+        db.execSQL(DROP_TABLE);
+        onCreate(db);
+        Log.d("TAG", "onUpgrade: run is successful");
     }
 
     public boolean insertUser(User user) {
@@ -159,7 +157,7 @@ public class DataHelper extends SQLiteOpenHelper {
 
     public void deleteUserSecond(String name){
         SQLiteDatabase db = getWritableDatabase();
-        db.delete(TABLE_NAME_USER, "name = ?", new String[]{name});
+        db.delete(TABLE_NAME_USER, "name = ? AND age = ", new String[]{name});
     }
 
     public void dropTable() {
